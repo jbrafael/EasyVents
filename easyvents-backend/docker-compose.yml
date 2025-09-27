@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # SNginx service
+  nginx:
+    image: nginx:stable-alpine
+    container_name: easyvents_nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/easyvents-backend
+      - ./.docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - easyvents_network
+
+  # Laravel service
+  app:
+    build:
+      context: ./.docker/app
+      dockerfile: Dockerfile
+    container_name: easyvents_app
+    restart: unless-stopped
+    volumes:
+      - .:/var/www/easyvents-backend
+    networks:
+      - easyvents_network
+
+  # MySQL service
+  db:
+    image: mysql:8.0
+    container_name: easyvents_db
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: easyvents
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - easyvents_network
+
+networks:
+  easyvents_network:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local
