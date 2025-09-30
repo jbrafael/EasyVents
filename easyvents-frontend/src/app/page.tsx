@@ -8,12 +8,17 @@ import eventsData from '@/data/events.json';
 export default function HomePage() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredEvents = eventsData.filter(event =>
+    event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    event.location.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const cardWidth = 336; // Largura do card (320px) + gap (16px)
 
-  // Função para rolar para a esquerda
   const scrollPrev = () => {
-    const newIndex = currentIndex > 0 ? currentIndex - 1 : eventsData.length - 1;
+    const newIndex = currentIndex > 0 ? currentIndex - 1 : filteredEvents.length - 1;
     setCurrentIndex(newIndex);
     scrollRef.current?.scrollTo({
       left: newIndex * cardWidth,
@@ -22,7 +27,7 @@ export default function HomePage() {
   };
 
   const scrollNext = () => {
-    const newIndex = (currentIndex + 1) % eventsData.length;
+    const newIndex = (currentIndex + 1) % filteredEvents.length;
     setCurrentIndex(newIndex);
     scrollRef.current?.scrollTo({
       left: newIndex * cardWidth,
@@ -31,43 +36,53 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    const scrollInterval = setInterval(scrollNext, 5000); 
+    const scrollInterval = setInterval(scrollNext, 5000);
     return () => clearInterval(scrollInterval);
   }, [currentIndex]);
 
+  const handleSearchChange = (term: string) => {
+    setSearchTerm(term);
+    setCurrentIndex(0);
+    scrollRef.current?.scrollTo({ left: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
-      <Header />
+      <Header onSearchChange={handleSearchChange} />
       <main className="container mx-auto p-8">
         <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-gray-900 dark:text-white">
           Eventos em Destaque
         </h2>
         
-        {/* Container do Carrossel */}
         <div className="relative">
-          <div ref={scrollRef} className="flex overflow-x-hidden gap-4 p-2 scrollbar-hide">
-            {eventsData.map((event) => (
+          <div 
+            ref={scrollRef} 
+            className="flex flex-col md:flex-row md:overflow-x-hidden md:gap-4 p-2 -mx-4 scrollbar-hide md:justify-start justify-center"
+          >
+            {/* Adicionamos o md:flex-row para reativar o layout de linha em telas maiores */}
+            {filteredEvents.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
           </div>
+          
+          {/* Botões de Navegação (visíveis apenas em telas médias ou maiores) */}
+          <div className="hidden md:block">
+            <button 
+              onClick={scrollPrev}
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-white/50 dark:bg-gray-800/50 text-gray-800 dark:text-white"
+            >
+              {'<'}
+            </button>
+            <button 
+              onClick={scrollNext}
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-white/50 dark:bg-gray-800/50 text-gray-800 dark:text-white"
+            >
+              {'>'}
+            </button>
+          </div>
 
-          {/* Botões de Navegação */}
-          <button 
-            onClick={scrollPrev}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-white/50 dark:bg-gray-800/50 text-gray-800 dark:text-white"
-          >
-            {'<'}
-          </button>
-          <button 
-            onClick={scrollNext}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-white/50 dark:bg-gray-800/50 text-gray-800 dark:text-white"
-          >
-            {'>'}
-          </button>
-
-          {/* Indicadores de Posição (pontos) */}
           <div className="flex justify-center mt-4">
-            {eventsData.map((_, index) => (
+            {filteredEvents.map((_, index) => (
               <div
                 key={index}
                 className={`h-2 w-2 mx-1 rounded-full ${

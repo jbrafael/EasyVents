@@ -5,7 +5,7 @@
     "slug": "conferencia-ia-backend",
     "location": "São Paulo, Brasil",
     "date": "2025-10-27",
-    "imageUrl": "https://via.placeholder.com/1080x720.png?text=IA+%26+Backend"
+    "imageUrl": "/images/Conferência de IA e Backend.png"
   },
   {
     "id": 2,
@@ -13,7 +13,7 @@
     "slug": "workshop-web-design",
     "location": "Online",
     "date": "2025-11-20",
-    "imageUrl": "https://via.placeholder.com/1080x720.png?text=Web+Design"
+    "imageUrl": "/images/Workshop de Web Design.png"
   },
   {
     "id": 3,
@@ -21,7 +21,7 @@
     "slug": "hackathon-blockchain",
     "location": "Curitiba, PR",
     "date": "2025-12-10",
-    "imageUrl": "https://via.placeholder.com/1080x720.png?text=Blockchain+Hackathon"
+    "imageUrl": "/images/Hackathon de Blockchain.png"
   },
   {
     "id": 4,
@@ -29,7 +29,7 @@
     "slug": "musica-eletronica",
     "location": "Rio de Janeiro, RJ",
     "date": "2025-12-25",
-    "imageUrl": "https://via.placeholder.com/1080x720.png?text=Musica+Eletronica"
+    "imageUrl": "/images/Festival de Música Eletrônica.png"
   },
   {
     "id": 5,
@@ -37,6 +37,6 @@
     "slug": "startups-inovacao",
     "location": "Belo Horizonte, MG",
     "date": "2026-01-15",
-    "imageUrl": "https://via.placeholder.com/1080x720.png?text=Feira+de+Startups"
+    "imageUrl": "/images/Feira de Startups e Inovação.png"
   }
 ]
