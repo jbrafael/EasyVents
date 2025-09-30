@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "title": "Conferência de IA e Backend",
+    "slug": "conferencia-ia-backend",
+    "location": "São Paulo, Brasil",
+    "date": "2025-10-27",
+    "imageUrl": "https://via.placeholder.com/1080x720.png?text=IA+%26+Backend"
+  },
+  {
+    "id": 2,
+    "title": "Workshop de Web Design",
+    "slug": "workshop-web-design",
+    "location": "Online",
+    "date": "2025-11-20",
+    "imageUrl": "https://via.placeholder.com/1080x720.png?text=Web+Design"
+  },
+  {
+    "id": 3,
+    "title": "Hackathon de Blockchain",
+    "slug": "hackathon-blockchain",
+    "location": "Curitiba, PR",
+    "date": "2025-12-10",
+    "imageUrl": "https://via.placeholder.com/1080x720.png?text=Blockchain+Hackathon"
+  },
+  {
+    "id": 4,
+    "title": "Festival de Música Eletrônica",
+    "slug": "musica-eletronica",
+    "location": "Rio de Janeiro, RJ",
+    "date": "2025-12-25",
+    "imageUrl": "https://via.placeholder.com/1080x720.png?text=Musica+Eletronica"
+  },
+  {
+    "id": 5,
+    "title": "Feira de Startups e Inovação",
+    "slug": "startups-inovacao",
+    "location": "Belo Horizonte, MG",
+    "date": "2026-01-15",
+    "imageUrl": "https://via.placeholder.com/1080x720.png?text=Feira+de+Startups"
+  }
+]

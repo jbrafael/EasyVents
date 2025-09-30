@@ -1,0 +1,30 @@
+# Diretórios de dependências
+/node_modules
+
+# Arquivos de build e cache do Next.js
+/.next/
+/out/
+/dist/
+.next/cache/
+
+# Arquivos de log
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.pnpm-debug.log
+
+# Arquivos de ambiente e chaves
+.env
+.env.local
+.env.production.local
+.env.development.local
+
+# Arquivos de sistema e de editor de código
+.DS_Store
+.vscode/
+
+# Build do TypeScript
+*.tsbuildinfo
+
+# Próprio arquivo de declaração de ambiente do Next.js
+next-env.d.ts
