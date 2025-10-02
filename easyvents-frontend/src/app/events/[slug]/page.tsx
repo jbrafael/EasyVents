@@ -1,4 +1,4 @@
-'use client'; // ADICIONE ESTA LINHA NO TOPO
+'use client'; 
 
 import React from 'react';
 import Image from 'next/image';
@@ -21,7 +21,6 @@ const EventPage: React.FC<EventPageProps> = ({ params }) => {
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-white">
-      {/* O onSearchChange é obrigatório, mesmo que não faça nada nesta página */}
       <Header onSearchChange={() => {}} /> 
       <main className="container mx-auto p-8 pt-20">
         <div className="relative w-full h-96 mb-8 rounded-lg overflow-hidden shadow-lg">

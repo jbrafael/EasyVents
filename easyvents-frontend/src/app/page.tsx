@@ -15,7 +15,7 @@ export default function HomePage() {
     event.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const cardWidth = 336; // Largura do card (320px) + gap (16px)
+  const cardWidth = 336; 
 
   const scrollPrev = () => {
     const newIndex = currentIndex > 0 ? currentIndex - 1 : filteredEvents.length - 1;

@@ -5,8 +5,8 @@ import axios, { AxiosError } from 'axios';
 import Header from '@/components/Header';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
-// Ícones simples para o botão de mostrar/esconder senha
 const EyeIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
     <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
@@ -28,6 +28,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,9 +41,7 @@ export default function LoginPage() {
         password,
       });
 
-      console.log('Login bem-sucedido:', response.data);
-      // Salve o token e redirecione
-      localStorage.setItem('token', response.data.token);
+      login(response.data.token);
       router.push('/');
 
     } catch (err) {
@@ -59,7 +58,6 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
-
   return (
     <div className="bg-gray-50 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-white">
       <Header onSearchChange={() => {}} />

@@ -4,9 +4,8 @@ import { useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import Header from '@/components/Header';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'; // Importe o useRouter
+import { useRouter } from 'next/navigation'; 
 
-// Ícones simples para o botão de mostrar/esconder senha
 const EyeIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
     <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
@@ -29,8 +28,8 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // Novo estado para mostrar/esconder senha
-  const router = useRouter(); // Inicialize o useRouter
+  const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,10 +47,9 @@ export default function RegisterPage() {
       console.log('Registro bem-sucedido:', response.data);
       setSuccess('Registro realizado com sucesso! Redirecionando para o login...');
       
-      // Redireciona o usuário para a página de login após o registro
       setTimeout(() => {
         router.push('/auth/login');
-      }, 2000); // Espera 2 segundos antes de redirecionar
+      }, 2000); 
 
     } catch (err) {
       if (axios.isAxiosError(err) && err.response && err.response.data && err.response.data.errors) {
@@ -105,9 +103,9 @@ export default function RegisterPage() {
                 required
               />
               <button
-                type="button" // Importante: type="button" para não submeter o formulário
+                type="button" 
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 dark:text-gray-300 top-7" // Ajuste o 'top-7' conforme necessário
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 dark:text-gray-300 top-7" 
               >
                 {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
               </button>

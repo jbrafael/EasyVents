@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Definimos as cores padrão (modo claro) para o corpo do site */
 body {
   font-family: Arial, Helvetica, sans-serif;
+  background-color: #f9fafb; /* Cor de fundo padrão */
+  color: #111827; /* Cor de texto padrão */
+}
+
+/* Usamos a classe 'dark' para sobrescrever as cores quando o modo escuro está ativado */
+html.dark body {
+  background-color: #1f2937; /* Cor de fundo do modo escuro */
+  color: #f3f4f6; /* Cor de texto do modo escuro */
 }
