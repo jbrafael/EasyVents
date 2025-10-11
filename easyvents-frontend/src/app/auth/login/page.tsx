@@ -1,11 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import axios, { AxiosError } from 'axios';
 import Header from '@/components/Header';
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
 
 const EyeIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -28,36 +27,27 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    try {
-      const response = await axios.post('http://localhost:8000/api/login', {
-        email,
-        password,
-      });
+    const result = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
+    });
 
-      login(response.data.token);
+    if (result?.error) {
+      setError(result.error);
+    } else {
       router.push('/');
-
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        if (err.response.status === 401) {
-          setError('Credenciais inválidas. Verifique seu email e senha.');
-        } else {
-          setError('Ocorreu um erro no login. Tente novamente.');
-        }
-      } else {
-        setError('Ocorreu um erro. Verifique sua conexão.');
-      }
-    } finally {
-      setLoading(false);
     }
+
+    setLoading(false);
   };
+
   return (
     <div className="bg-gray-50 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-white">
       <Header onSearchChange={() => {}} />

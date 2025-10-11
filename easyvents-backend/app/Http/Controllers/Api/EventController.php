@@ -1,28 +1,30 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class EventController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        if (!Auth::check()) {
-            return response()->json(['message' => 'Não autenticado'], 401);
+        if (Auth::check()) {
+            $events = Event::where('user_id', Auth::id())->get();
+
+            return response()->json(['events' => $events]);
         }
-
-        // Se quiser só eventos do usuário:
-        $events = Event::where('user_id', Auth::id())->get();
-
-        // Se quiser TODOS os eventos:
-        // $events = Event::all();
-
-        return response()->json(['events' => $events]);
+        return response()->json(['message' => 'Não autenticado'], 401);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -38,33 +40,30 @@ class EventController extends Controller
         return response()->json(['event' => $event], 201);
     }
 
-    public function show($id)
+    /**
+     * Display the specified resource.
+     */
+    public function show(Event $event)
     {
-        $event = Event::where('id', $id)
-                      ->where('user_id', Auth::id())
-                      ->first();
-
-        if (!$event) {
-            return response()->json(['message' => 'Evento não encontrado'], 404);
+        if ($event->user_id !== Auth::id()) {
+            return response()->json(['message' => 'Não autorizado'], 403);
         }
-
         return response()->json(['event' => $event]);
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Event $event)
     {
-        $event = Event::where('id', $id)
-                      ->where('user_id', Auth::id())
-                      ->first();
-
-        if (!$event) {
-            return response()->json(['message' => 'Evento não encontrado'], 404);
+        if ($event->user_id !== Auth::id()) {
+            return response()->json(['message' => 'Não autorizado'], 403);
         }
 
         $validatedData = $request->validate([
-            'title' => 'string|max:255',
-            'location' => 'string|max:255',
-            'event_date' => 'date',
+            'title' => 'sometimes|string|max:255',
+            'location' => 'sometimes|string|max:255',
+            'event_date' => 'sometimes|date',
         ]);
 
         $event->update($validatedData);
@@ -72,18 +71,16 @@ class EventController extends Controller
         return response()->json(['event' => $event]);
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Event $event)
     {
-        $event = Event::where('id', $id)
-                      ->where('user_id', Auth::id())
-                      ->first();
-
-        if (!$event) {
-            return response()->json(['message' => 'Evento não encontrado'], 404);
+        if ($event->user_id !== Auth::id()) {
+            return response()->json(['message' => 'Não autorizado'], 403);
         }
 
         $event->delete();
-
         return response()->json(['message' => 'Evento deletado com sucesso']);
     }
 }

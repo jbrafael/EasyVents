@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-import axios, { AxiosError } from 'axios';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import Header from '@/components/Header';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 
 const EyeIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -15,11 +15,10 @@ const EyeIcon = () => (
 
 const EyeSlashIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3.981 18.003A12.337 12.337 0 0 1 12 6.002c2.192 0 4.238.489 6.131 1.349m1.205 1.141-1.579 1.579M10.154 9.458a2.998 2.998 0 0 0 4.24 4.24m.511-2.674 1.583 1.583M12 17.25c-2.192 0-4.238-.489-6.131-1.349m-1.205-1.141 1.579-1.579M10.154 9.458a2.998 2.998 0 0 0 4.24 4.24M12 17.25c-2.192 0-4.238-.489-6.131-1.349m-1.205-1.141 1.579-1.579M10.154 9.458a2.998 2.998 0 0 0 4.24 4.24M12 17.25c-2.192 0-4.238-.489-6.131-1.349m-1.205-1.141 1.579-1.579M10.154 9.458a2.998 2.998 0 0 0 4.24 4.24M12 17.25c-2.192 0-4.238-.489-6.131-1.349m-1.205-1.141 1.579-1.579M10.154 9.458a2.998 2.998 0 0 0 4.24 4.24" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 17.25c-2.192 0-4.238-.489-6.131-1.349m-1.205-1.141 1.579-1.579M10.154 9.458a2.998 2.998 0 0 0 4.24 4.24m.511-2.674 1.583 1.583M12 17.25c-2.192 0-4.238-.489-6.131-1.349m-1.205-1.141 1.579-1.579M10.154 9.458a2.998 2.998 0 0 0 4.24 4.24M12 17.25c-2.192 0-4.238-.489-6.131-1.349m-1.205-1.141 1.579-1.579M10.154 9.458a2.998 2.998 0 0 0 4.24 4.24" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3.981 18.003A12.337 12.337 0 0 1 12 6.002c2.192 0 4.238.489 6.131 1.349m1.205 1.141-1.579 1.579M10.154 9.458a2.998 2.998 0 0 0 4.24 4.24m.511-2.674 1.583 1.583M12 17.25c-2.192 0-4.238-.489-6.131-1.349m-1.205-1.141 1.579-1.579M10.154 9.458a2.998 2.998 0 0 0 4.24 4.24M12 17.25c-2.192 0-4.238-.489-6.131-1.349m-1.205-1.141 1.579-1.579M10.154 9.458a2.998 2.998 0 0 0 4.24 4.24" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 17.25c-2.192 0-4.238-.489-6.131-1.349m-1.205-1.141 1.579-1.579M10.154 9.458a2.998 2.998 0 0 0 4.24 4.24M12 17.25c-2.192 0-4.238-.489-6.131-1.349m-1.205-1.141 1.579-1.579M10.154 9.458a2.998 2.998 0 0 0 4.24 4.24" />
   </svg>
 );
-
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -30,6 +29,17 @@ export default function RegisterPage() {
   const [success, setSuccess] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    async function getCsrfCookie() {
+      try {
+        await axios.get('http://localhost:8000/sanctum/csrf-cookie');
+      } catch (e) {
+        console.error('Falha ao obter cookie CSRF', e);
+      }
+    }
+    getCsrfCookie();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,11 +56,9 @@ export default function RegisterPage() {
 
       console.log('Registro bem-sucedido:', response.data);
       setSuccess('Registro realizado com sucesso! Redirecionando para o login...');
-      
       setTimeout(() => {
         router.push('/auth/login');
-      }, 2000); 
-
+      }, 2000);
     } catch (err) {
       if (axios.isAxiosError(err) && err.response && err.response.data && err.response.data.errors) {
         const errorMessages = Object.values(err.response.data.errors).flat();
@@ -66,7 +74,7 @@ export default function RegisterPage() {
   return (
     <div className="bg-gray-50 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-white">
       <Header onSearchChange={() => {}} />
-      <main className="container mx-auto p-8 flex justify-center items-center min-h-[calc(100vh-64px)]"> {/* min-h ajustado */}
+      <main className="container mx-auto p-8 flex justify-center items-center min-h-[calc(100vh-64px)]">
         <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
           <h1 className="text-2xl font-bold mb-4 text-center">Registro</h1>
           {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
@@ -93,19 +101,19 @@ export default function RegisterPage() {
                 required
               />
             </div>
-            <div className="mb-6 relative"> {/* Adicione 'relative' aqui */}
+            <div className="mb-6 relative">
               <label className="block text-sm font-semibold mb-2">Senha</label>
               <input
-                type={showPassword ? 'text' : 'password'} 
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" // Adicione 'pr-10' para espaço do ícone
+                className="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                 required
               />
               <button
-                type="button" 
+                type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 dark:text-gray-300 top-7" 
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 dark:text-gray-300 top-7"
               >
                 {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
               </button>

@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import { useAuth } from '@/context/AuthContext';
 import axios, { AxiosError } from 'axios';
-
-// Definindo o tipo para os eventos
 interface Event {
   id: number;
   title: string;
@@ -24,10 +22,10 @@ export default function DashboardPage() {
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
   const [date, setDate] = useState('');
-  const [loading, setLoading] = useState(true); // Alterado para 'true'
+  const [loading, setLoading] = useState(true); 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<Event[]>([]); 
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -46,11 +44,11 @@ export default function DashboardPage() {
           Authorization: `Bearer ${token}`,
         },
       });
-      // Verificando se a resposta é um objeto e se a chave 'events' existe
+
       if (response.data && response.data.events) {
           setEvents(response.data.events);
       } else {
-          setEvents([]); // Garante que events seja sempre um array
+          setEvents([]); 
       }
     } catch (err) {
       console.error('Erro ao buscar eventos:', err);
@@ -85,7 +83,7 @@ export default function DashboardPage() {
       setTitle('');
       setLocation('');
       setDate('');
-      fetchUserEvents();
+      fetchUserEvents(); 
     } catch (err) {
       if (axios.isAxiosError(err) && err.response && err.response.data && err.response.data.errors) {
         const errorMessages = Object.values(err.response.data.errors).flat();
