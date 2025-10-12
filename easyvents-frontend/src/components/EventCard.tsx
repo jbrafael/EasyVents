@@ -1,12 +1,12 @@
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link'; 
+import Link from 'next/link';
 
 interface EventCardProps {
   event: {
     id: number;
     title: string;
-    slug: string; 
+    slug: string;
     location: string;
     date: string;
     imageUrl: string;
@@ -15,14 +15,14 @@ interface EventCardProps {
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   return (
-    <Link href={`/events/${event.slug}`} legacyBehavior>
+    <Link href={`/events/${event.slug}`}>
       <div className="flex-none w-64 md:w-80 rounded-lg overflow-hidden shadow-lg m-4 transition-transform hover:scale-105 cursor-pointer bg-white dark:bg-gray-700">
         <div className="relative w-full h-40">
-          <Image 
-            src={event.imageUrl} 
-            alt={event.title} 
-            fill={true} 
-            className="object-cover" 
+          <Image
+            src={event.imageUrl}
+            alt={event.title}
+            fill={true}
+            className="object-cover"
           />
         </div>
         <div className="p-4">
