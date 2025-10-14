@@ -25,20 +25,23 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
-            'event_date' => 'required|date',
-        ]);
+public function store(Request $request)
+{
+    $validatedData = $request->validate([
+        'title' => 'required|string|max:255',
+        'location' => 'required|string|max:255',
+        'event_date' => 'required|date',
+        'description' => 'nullable|string',
+        'image' => 'nullable|string',
+    ]);
 
-        $validatedData['user_id'] = Auth::id();
+    $validatedData['user_id'] = Auth::id();
+    $validatedData['slug'] = \Illuminate\Support\Str::slug($validatedData['title'], '-'); // Garanta o slug
 
-        $event = Event::create($validatedData);
+    $event = Event::create($validatedData);
 
-        return response()->json(['event' => $event], 201);
-    }
+    return response()->json(['event' => $event], 201);
+}
 
     /**
      * Display the specified resource.

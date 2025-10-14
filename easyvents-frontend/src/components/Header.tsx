@@ -2,9 +2,8 @@
 
 import React from 'react';
 import { useTheme } from '@/context/ThemeContext';
-import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react'; // Importe useSession
 
 interface HeaderProps {
   onSearchChange: (searchTerm: string) => void;
@@ -12,7 +11,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onSearchChange }) => {
   const { theme, toggleTheme } = useTheme();
-  const { user } = useAuth();
+  const { data: session, status } = useSession(); // Use o hook useSession
 
   return (
     <header className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-4 shadow-md">
@@ -29,9 +28,9 @@ const Header: React.FC<HeaderProps> = ({ onSearchChange }) => {
             onChange={(e) => onSearchChange(e.target.value)}
             className="w-64 px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          {user ? (
+          {status === 'authenticated' ? (
             <>
-              <span className="text-sm font-semibold">Olá, {user.name.split(' ')[0]}!</span>
+              <span className="text-sm font-semibold">Olá, {session?.user?.name?.split(' ')[0]}!</span>
               <Link href="/dashboard">
                 <button className="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white font-semibold">
                   Dashboard
@@ -68,7 +67,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchChange }) => {
 
         {/* Layout para telas pequenas */}
         <div className="md:hidden flex items-center gap-2">
-          {user ? (
+          {status === 'authenticated' ? (
             <>
               <Link href="/dashboard">
                 <button className="px-3 py-1 rounded-md bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm">

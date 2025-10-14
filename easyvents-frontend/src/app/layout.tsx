@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { AuthProvider } from '@/context/AuthContext';
+import { SessionProvider } from 'next-auth/react';  // Importe o SessionProvider
 import Head from './head';
 import Header from '@/components/Header';
 import { useState } from 'react';
@@ -27,8 +28,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider>
           <AuthProvider>
-            <Header onSearchChange={handleSearchChange} />
-            <main>{children}</main>
+            <SessionProvider> {/* Envolva o conteúdo com o SessionProvider */}
+              <Header onSearchChange={handleSearchChange} />
+              <main>{children}</main>
+            </SessionProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

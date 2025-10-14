@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'EasyVents',
-  description: 'Plataforma de eventos e venda de ingressos',
+  description: 'Plataforma de eventos',
 };
 
 export default function Head() {
